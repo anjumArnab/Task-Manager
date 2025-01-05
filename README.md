@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Note-Keeper
 Flutter database application using sqflite plugin.
 
