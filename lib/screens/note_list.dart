@@ -25,23 +25,27 @@ class _NoteListState extends State<NoteList> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber.shade400,
+        backgroundColor: Colors.indigo.shade100,
+        foregroundColor: Colors.white,
         centerTitle: true,
         title: const Text(
-          "N O T E",
+          "Keep The Note",
           style: TextStyle(color: Colors.white),
         ),
       ),
       body: getNoteListView(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          navigateToDetail(Note("", "", 1, ""), "Add Note");
-        },
-        tooltip: "Add Note",
-        backgroundColor: Colors.amber.shade400, // Customize the color
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
+      floatingActionButton: ClipOval(
+        child: FloatingActionButton(
+          onPressed: () {
+            navigateToDetail(Note("", "", 1, ""), "Add Note");
+          },
+          tooltip: "Add Note",
+          backgroundColor: Colors.indigo.shade100,
+          foregroundColor: Colors.white, // Customize the color
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
       ),
     );
