@@ -33,7 +33,9 @@ class _NoteDetailState extends State<NoteDetail> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber.shade400,
+        backgroundColor: Colors.indigo.shade100,
+        foregroundColor: Colors.white,
+        centerTitle: true,
         title: Text(appBarTitle, style: const TextStyle(color: Colors.white)),
       ),
       body: Padding(
