@@ -72,7 +72,11 @@ class InfoCard extends StatelessWidget {
                 const Spacer(),
                 Text(
                   task.timeAndDate,
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  style: const TextStyle(
+                    color: Colors.blueGrey, // Updated color
+                    fontSize: 14,            // Adjusted font size
+                    fontStyle: FontStyle.italic, // Italicized the text
+                  ),
                 ),
               ],
             ),
