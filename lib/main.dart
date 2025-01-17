@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 
 void main() {
-  runApp(const MyApp());
+  runApp(const DBApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class DBApp extends StatelessWidget {
+  const DBApp({super.key});
 
   @override
   Widget build(BuildContext context) {
