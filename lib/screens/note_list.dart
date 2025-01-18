@@ -1,4 +1,4 @@
-import 'dart:async';
+/*import 'dart:async';
 import 'package:database_app/services/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:database_app/screens/note_detail.dart';
@@ -150,3 +150,4 @@ class _NoteListState extends State<NoteList> {
     });
   }
 }
+*/

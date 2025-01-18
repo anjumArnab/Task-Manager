@@ -1,7 +1,8 @@
+import 'package:database_app/services/database_helper_task.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/task_model.dart'; // Ensure your Task model is correctly imported
-import '../widgets/info_card.dart'; // Updated import path for InfoCard widget
+import '../models/task_model.dart';
+import '../widgets/info_card.dart';
 
 class TaskManager extends StatefulWidget {
   const TaskManager({super.key});
@@ -11,38 +12,37 @@ class TaskManager extends StatefulWidget {
 }
 
 class _TaskManagerState extends State<TaskManager> {
-  final List<Task> tasks = [
-    Task(
-      title: 'Complete Flutter Project',
-      description: 'Build a complete Flutter app with REST API integration.',
-      timeAndDate: '2025-01-16, 10:00 AM',
-      priority: 'High',
-      isChecked: false,
-    ),
-    Task(
-      title: 'Finish Homework',
-      description: 'Complete the homework for Computer Science course.',
-      timeAndDate: '2025-01-17, 2:00 PM',
-      priority: 'Medium',
-      isChecked: false,
-    ),
-    Task(
-      title: 'Meeting with Team',
-      description: 'Discuss project progress with the team.',
-      timeAndDate: '2025-01-18, 9:00 AM',
-      priority: 'Low',
-      isChecked: false,
-    ),
-  ];
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
+  late List<Task> tasks;
 
+  @override
+  void initState() {
+    super.initState();
+    tasks = [];
+    _loadTasks(); // Load tasks from the database on startup
+  }
+
+  // Load tasks from the database
+  Future<void> _loadTasks() async {
+    List<Task> taskList = await _databaseHelper.getTaskList(); // Updated method call
+    setState(() {
+      tasks = taskList;
+    });
+  }
+
+  // Add a new task and save it to the database
   void _addNewTask() {
     _showTaskDetailsDialog(context, null, null);
   }
 
-  void _deleteTask(int index) {
-    setState(() {
-      tasks.removeAt(index);
-    });
+  // Delete task from database and UI
+  void _deleteTask(int index) async {
+    int result = await _databaseHelper.deleteTask(tasks[index].id!); // Updated method call
+    if (result != 0) {
+      setState(() {
+        tasks.removeAt(index);
+      });
+    }
   }
 
   @override
@@ -82,18 +82,19 @@ class _TaskManagerState extends State<TaskManager> {
       floatingActionButton: ClipOval(
         child: FloatingActionButton(
           onPressed: _addNewTask,
-          backgroundColor: Colors.blue.shade300, // Background color for the button
-          elevation: 8, // Adds shadow effect for better visibility
+          backgroundColor: Colors.blue.shade300,
+          elevation: 8,
           child: const Icon(
-            Icons.task, // Icon representing adding a new card
-            color: Colors.white, // Makes the icon color white for contrast
-            size: 30, // Size of the icon
+            Icons.task,
+            color: Colors.white,
+            size: 30,
           ),
         ),
       ),
     );
   }
 
+  // Task details dialog for both adding and editing tasks
   void _showTaskDetailsDialog(
       BuildContext context, Task? task, int? index) {
     final TextEditingController titleController =
@@ -108,7 +109,7 @@ class _TaskManagerState extends State<TaskManager> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          contentPadding: const EdgeInsets.all(20), // Increases the padding around content
+          contentPadding: const EdgeInsets.all(20),
           title: Text(task == null ? 'Add Task' : 'Edit Task'),
           content: SingleChildScrollView(
             child: Column(
@@ -217,24 +218,25 @@ class _TaskManagerState extends State<TaskManager> {
           ),
           actions: [
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 setState(() {
                   if (task == null) {
-                    tasks.insert(0, Task(
+                    Task newTask = Task(
                       title: titleController.text,
                       description: descriptionController.text,
                       timeAndDate: timeController.text,
                       priority: priority,
                       isChecked: false,
-                    ));
-                  } else {
-                    tasks[index!] = Task(
-                      title: titleController.text,
-                      description: descriptionController.text,
-                      timeAndDate: timeController.text,
-                      priority: priority,
-                      isChecked: task.isChecked,
                     );
+                    _databaseHelper.insertTask(newTask); // Updated method call
+                    _loadTasks(); // Refresh task list from the DB
+                  } else {
+                    task.title = titleController.text;
+                    task.description = descriptionController.text;
+                    task.timeAndDate = timeController.text;
+                    task.priority = priority;
+                    _databaseHelper.updateTask(task); // Updated method call
+                    _loadTasks(); // Refresh task list from the DB
                   }
                 });
                 Navigator.of(context).pop();

@@ -1,4 +1,4 @@
-import 'package:database_app/services/database_helper.dart';
+/*import 'package:database_app/services/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:database_app/models/note.dart';
@@ -196,3 +196,4 @@ class _NoteDetailState extends State<NoteDetail> {
     Navigator.pop(context, true);
   }
 }
+*/
