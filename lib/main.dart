@@ -1,7 +1,6 @@
 import 'package:database_app/screens/task_manager.dart';
 import 'package:flutter/material.dart';
 
-
 void main() {
   runApp(const DBApp());
 }
