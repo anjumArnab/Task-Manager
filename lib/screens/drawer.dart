@@ -36,7 +36,7 @@ class CustomDrawer extends StatelessWidget {
           // Backup Tasks Section
           ListTile(
             leading: const Icon(Icons.cloud),
-            title: const Text('Backup Tasks to Cloud'),
+            title: const Text('Backup to Cloud'), // Backup Tasks to Cloud
             trailing: Switch(
               value: isBackupEnabled,
               onChanged: onBackupToggle,
