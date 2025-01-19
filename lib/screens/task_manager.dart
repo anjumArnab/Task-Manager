@@ -73,7 +73,13 @@ class _TaskManagerState extends State<TaskManager> {
       ),
       body: tasks.isEmpty
           ? const Center(
-              child: Text('No tasks available.'),
+              child: Text(
+                  'No tasks available.',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
             )
           : Padding(
               padding: const EdgeInsets.all(16.0),
