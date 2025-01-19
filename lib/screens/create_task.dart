@@ -177,14 +177,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 onPressed: _saveTask,
-                child: const Text(
-                  'Save Task',
-                  style: TextStyle(fontSize: 18),
-                ),
+                child: Text(widget.task == null ? 'Save' : 'Update'),
               ),
             ],
           ),
