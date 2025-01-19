@@ -14,7 +14,7 @@ class DBApp extends StatelessWidget {
       title: 'Task Manager',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue, // Preserved the theme configuration
+        primarySwatch: Colors.blue,
       ),
       home: const TaskManager(),
     );
