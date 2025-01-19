@@ -17,13 +17,13 @@ class InfoCard extends StatelessWidget {
   Color getCardColor() {
     switch (task.priority.toLowerCase()) {
       case 'high':
-        return Colors.redAccent.shade100;
+        return Colors.red;
       case 'medium':
-        return Colors.orangeAccent.shade100;
+        return Colors.orange;
       case 'low':
-        return Colors.greenAccent.shade100;
+        return Colors.green;
       default:
-        return Colors.grey.shade200;
+        return Colors.grey;
     }
   }
 
