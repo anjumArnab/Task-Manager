@@ -6,7 +6,7 @@ import '../widgets/info_card.dart';
 import 'drawer.dart';
 
 class TaskManager extends StatefulWidget {
-  const TaskManager({Key? key}) : super(key: key);
+  const TaskManager({super.key});
 
   @override
   _TaskManagerState createState() => _TaskManagerState();
