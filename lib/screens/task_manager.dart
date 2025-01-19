@@ -135,7 +135,6 @@ class _TaskManagerState extends State<TaskManager> {
           child: const Icon(
             Icons.add,
             color: Colors.white,
-            //size: 30,
           ),
         ),
       ),
