@@ -73,7 +73,7 @@ class _TaskManagerState extends State<TaskManager> {
         title: const Text('Task Manager'),
       ),
       drawer: CustomDrawer(  // Add the drawer here
-        username: 'Arnab Sakib',  // Sample data for username
+        username: 'Sakib Anjum Arnab',  // Sample data for username
         email: 'arnab@example.com',  // Sample email
         profilePictureUrl: 'https://www.example.com/profile-picture.jpg',  // Sample profile image URL
         isBackupEnabled: false,  // Sample value for backup switch
