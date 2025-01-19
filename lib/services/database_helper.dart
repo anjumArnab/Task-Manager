@@ -4,7 +4,6 @@ import 'package:database_app/models/task_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
-
 class DatabaseHelper {
   String taskTable = "task_table";
   String colId = "id";
