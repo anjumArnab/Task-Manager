@@ -5,7 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'task_manager.dart';
 
 class LoginCreateAccountScreen extends StatefulWidget {
+  const LoginCreateAccountScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _LoginCreateAccountScreenState createState() =>
       _LoginCreateAccountScreenState();
 }
@@ -17,7 +20,7 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  FirebaseAuthMethods _authMethods = FirebaseAuthMethods(FirebaseAuth.instance);
+  final FirebaseAuthMethods _authMethods = FirebaseAuthMethods(FirebaseAuth.instance);
 
   void _toggleScreens() {
     setState(() {
@@ -39,7 +42,7 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
       if (FirebaseAuth.instance.currentUser != null) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => TaskManager()),
+          MaterialPageRoute(builder: (context) => const TaskManager()),
         );
       }
     } else {
@@ -52,7 +55,7 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
       if (FirebaseAuth.instance.currentUser != null) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => TaskManager()),
+          MaterialPageRoute(builder: (context) => const TaskManager()),
         );
       }
     }
@@ -81,28 +84,32 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                TextField(
+                TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Email',
                     hintText: 'Enter your email',
-                    border: OutlineInputBorder(),
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.purple.shade300),
+                    ),
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 16),
-                TextField(
+                TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password',
                     hintText: 'Enter your password',
-                    border: const OutlineInputBorder(),
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.purple.shade300),
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.purple.shade300),
                       onPressed: () {
                         setState(() {
                           _isPasswordVisible = !_isPasswordVisible;
@@ -113,16 +120,24 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                   obscureText: !_isPasswordVisible,
                 ),
                 const SizedBox(height: 16),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 40),
+                OutlinedButton(
+                  onPressed: _authenticate,
+                  style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius:
+                          BorderRadius.circular(10), // Rounded corners
+                    ),
+                    side: BorderSide(color: Colors.purple.shade300, width: 1),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 24),
+                  ),
+                  child: Text(
+                    _isLoginScreen ? 'Login' : 'Create Account',
+                    style: TextStyle(
+                      color: Colors.purple.shade300,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  onPressed: _authenticate,
-                  child: Text(_isLoginScreen ? 'Login' : 'Create Account', style: const TextStyle(fontSize: 17)),
                 ),
                 const SizedBox(height: 15),
                 RichText(
@@ -155,3 +170,22 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
     );
   }
 }
+/*
+OutlinedButton(
+  onPressed: _authenticate,
+  style: OutlinedButton.styleFrom(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20), // Rounded corners
+    ),
+    side: BorderSide(color: Colors.purple.shade300, width: 1),
+    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+  ),
+  child: Text(
+    _isLoginScreen ? 'Login' : 'Create Account', style: const TextStyle(fontSize: 17),
+    style: TextStyle(
+      color: Colors.purple.shade300,
+      fontWeight: FontWeight.w500,
+    ),
+  ),
+)
+*/

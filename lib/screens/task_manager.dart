@@ -72,11 +72,13 @@ class _TaskManagerState extends State<TaskManager> {
       appBar: AppBar(
         title: const Text('Task Manager'),
       ),
-      drawer: CustomDrawer(  // Add the drawer here
-        username: 'Sakib Anjum Arnab',  // Sample data for username
-        email: 'arnab@example.com',  // Sample email
-        profilePictureUrl: 'https://www.example.com/profile-picture.jpg',  // Sample profile image URL
-        isBackupEnabled: false,  // Sample value for backup switch
+      drawer: CustomDrawer(
+        // Add the drawer here
+        username: 'Sakib Anjum Arnab', // Sample data for username
+        email: 'arnab@example.com', // Sample email
+        profilePictureUrl:
+            'https://www.example.com/profile-picture.jpg', // Sample profile image URL
+        isBackupEnabled: false, // Sample value for backup switch
         onBackupToggle: (bool value) {
           // Handle backup toggle functionality here
         },
@@ -90,12 +92,12 @@ class _TaskManagerState extends State<TaskManager> {
       body: tasks.isEmpty
           ? const Center(
               child: Text(
-                  'No tasks available.',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
+                'No tasks available.',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
             )
           : Padding(
               padding: const EdgeInsets.all(16.0),
@@ -127,15 +129,20 @@ class _TaskManagerState extends State<TaskManager> {
                 },
               ),
             ),
-      floatingActionButton: ClipOval(
-        child: FloatingActionButton(
-          onPressed: _addNewTask,
-          backgroundColor: Colors.blue.shade300,
-          elevation: 8,
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addNewTask,
+        elevation: 1, // Remove shadow
+        //backgroundColor: Colors.transparent, // Transparent background
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30), // Rounded corners
+          side: BorderSide(
+            color: Colors.purple.shade300, // Border color
+            width: 2, // Border width
           ),
+        ),
+        child: const Icon(
+          Icons.add,
+          color: Colors.purple, // Icon color matches the border
         ),
       ),
     );

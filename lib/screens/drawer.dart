@@ -30,31 +30,36 @@ class CustomDrawer extends StatelessWidget {
             accountName: Text(username),
             accountEmail: Text(email),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: NetworkImage(profilePictureUrl), // Replace with user's profile picture URL
+              backgroundImage: NetworkImage(
+                  profilePictureUrl), // Replace with user's profile picture URL
+            ),
+            decoration: BoxDecoration(
+              color: Colors.purple.shade300, // Set background color
             ),
           ),
           // Backup Tasks Section
           ListTile(
-            leading: const Icon(Icons.cloud),
+            leading: Icon(Icons.cloud, color: Colors.purple.shade300),
             title: const Text('Backup to Cloud'), // Backup Tasks to Cloud
             trailing: Switch(
+              focusColor: Colors.purple.shade300,
               value: isBackupEnabled,
               onChanged: onBackupToggle,
             ),
           ),
-          
+
           const Divider(),
 
           // Logout Button
           ListTile(
-            leading: const Icon(Icons.logout),
+            leading: Icon(Icons.logout, color: Colors.purple.shade300),
             title: const Text('Logout'),
             onTap: onLogout, // Add logout functionality here
           ),
 
           // Exit Button
           ListTile(
-            leading: const Icon(Icons.exit_to_app),
+            leading: Icon(Icons.exit_to_app, color: Colors.purple.shade300),
             title: const Text('Exit'),
             onTap: onExit, // Add exit functionality here
           ),

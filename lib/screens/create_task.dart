@@ -8,7 +8,7 @@ class CreateTaskPage extends StatefulWidget {
   final Task? task;
   final int? taskIndex;
 
-  const CreateTaskPage({Key? key, this.task, this.taskIndex}) : super(key: key);
+  const CreateTaskPage({super.key, this.task, this.taskIndex});
 
   @override
   _CreateTaskPageState createState() => _CreateTaskPageState();
@@ -53,7 +53,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
           pickedTime.minute,
         );
         setState(() {
-          timeController.text = DateFormat('yyyy-MM-dd, h:mm a').format(finalDateTime);
+          timeController.text =
+              DateFormat('yyyy-MM-dd, h:mm a').format(finalDateTime);
         });
       }
     }
@@ -63,8 +64,10 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     return Expanded(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: priority == priorityValue ? color : Colors.grey.shade300,
-          foregroundColor: priority == priorityValue ? Colors.white : Colors.black,
+          backgroundColor:
+              priority == priorityValue ? color : Colors.grey.shade300,
+          foregroundColor:
+              priority == priorityValue ? Colors.white : Colors.black,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -80,28 +83,29 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   }
 
   void _saveTask() async {
-  if (widget.task == null) {
-    Task newTask = Task(
-      title: titleController.text,
-      description: descriptionController.text,
-      timeAndDate: timeController.text,
-      priority: priority,
-      isChecked: false,
+    if (widget.task == null) {
+      Task newTask = Task(
+        title: titleController.text,
+        description: descriptionController.text,
+        timeAndDate: timeController.text,
+        priority: priority,
+        isChecked: false,
+      );
+      await _databaseHelper.insertTask(newTask);
+    } else {
+      widget.task!.title = titleController.text;
+      widget.task!.description = descriptionController.text;
+      widget.task!.timeAndDate = timeController.text;
+      widget.task!.priority = priority;
+      await _databaseHelper.updateTask(widget.task!);
+    }
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+          builder: (context) =>
+              const TaskManager()), // Replace `HomeScreen` with your actual home screen widget.
+      (route) => false,
     );
-    await _databaseHelper.insertTask(newTask);
-  } else {
-    widget.task!.title = titleController.text;
-    widget.task!.description = descriptionController.text;
-    widget.task!.timeAndDate = timeController.text;
-    widget.task!.priority = priority;
-    await _databaseHelper.updateTask(widget.task!);
   }
-  Navigator.of(context).pushAndRemoveUntil(
-    MaterialPageRoute(builder: (context) => const TaskManager()), // Replace `HomeScreen` with your actual home screen widget.
-    (route) => false,
-  );
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -118,11 +122,10 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 controller: titleController,
                 decoration: InputDecoration(
                   labelText: 'Title',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey.shade100,
+                  border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.purple.shade300),
+                    ),
+                  
                 ),
               ),
               const SizedBox(height: 10),
@@ -131,11 +134,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 maxLines: 3, // Allow the description field to have 5 lines
                 decoration: InputDecoration(
                   labelText: 'Description',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey.shade100,
+                  border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.purple.shade300),
+                    ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -147,16 +148,15 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       readOnly: true,
                       decoration: InputDecoration(
                         labelText: 'Time & Date',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey.shade100,
+                        border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.purple.shade300),
+                    ),
+                        
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.calendar_today, color: Colors.blue),
+                    icon: Icon(Icons.calendar_today, color: Colors.purple.shade300),
                     onPressed: _selectDateTime,
                   ),
                 ],
@@ -173,15 +173,23 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 ],
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+              OutlinedButton(
+                onPressed: _saveTask,
+                style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                  ),
+                  side: BorderSide(color: Colors.purple.shade300, width: 1),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                ),
+                child: Text(
+                  widget.task == null ? 'Save' : 'Update',
+                  style: TextStyle(
+                    color: Colors.purple.shade300,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-                onPressed: _saveTask,
-                child: Text(widget.task == null ? 'Save' : 'Update'),
               ),
             ],
           ),
@@ -190,3 +198,4 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     );
   }
 }
+
