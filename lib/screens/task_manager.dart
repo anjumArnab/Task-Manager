@@ -9,6 +9,7 @@ class TaskManager extends StatefulWidget {
   const TaskManager({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _TaskManagerState createState() => _TaskManagerState();
 }
 
@@ -131,18 +132,17 @@ class _TaskManagerState extends State<TaskManager> {
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewTask,
-        elevation: 1, // Remove shadow
-        //backgroundColor: Colors.transparent, // Transparent background
+        elevation: 1,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30), // Rounded corners
+          borderRadius: BorderRadius.circular(30),
           side: BorderSide(
-            color: Colors.purple.shade300, // Border color
-            width: 2, // Border width
+            color: Colors.purple.shade300,
+            width: 2,
           ),
         ),
         child: const Icon(
           Icons.add,
-          color: Colors.purple, // Icon color matches the border
+          color: Colors.purple, 
         ),
       ),
     );
