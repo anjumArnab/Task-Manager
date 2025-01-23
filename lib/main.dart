@@ -1,7 +1,5 @@
 import 'package:database_app/firebase_options.dart';
-import 'package:database_app/screens/login_create_account_screen.dart';
 import 'package:database_app/screens/task_manager.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +22,7 @@ class DBApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-     home: FirebaseAuth.instance.currentUser != null ? const TaskManager() : const LoginCreateAccountScreen(),
+     home: const TaskManager()
     );
   }
 }
