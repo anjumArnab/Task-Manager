@@ -11,7 +11,6 @@ class TaskManager extends StatefulWidget {
   const TaskManager({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _TaskManagerState createState() => _TaskManagerState();
 }
 
@@ -88,16 +87,13 @@ class _TaskManagerState extends State<TaskManager> {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data != null) {
-                // User is logged in
                 return const SizedBox(width: 15); // Empty space instead of button
               } else {
-                // User is not logged in
                 return OutlinedButton(
                   onPressed: () => _navigateToLoginCreateAccountScreen(context),
                   style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Rounded corners
+                      borderRadius: BorderRadius.circular(10), // Rounded corners
                     ),
                     side: BorderSide(color: Colors.purple.shade300, width: 1),
                     padding: const EdgeInsets.symmetric(
@@ -118,12 +114,10 @@ class _TaskManagerState extends State<TaskManager> {
         ],
       ),
       drawer: CustomDrawer(
-        // Add the drawer here
-        username: 'Sakib Anjum Arnab', // Sample data for username
-        email: 'arnab@example.com', // Sample email
-        profilePictureUrl:
-            'https://www.example.com/profile-picture.jpg', // Sample profile image URL
-        isBackupEnabled: false, // Sample value for backup switch
+        username: 'Sakib Anjum Arnab',
+        email: 'arnab@example.com',
+        profilePictureUrl: 'https://www.example.com/profile-picture.jpg',
+        isBackupEnabled: false,
         onBackupToggle: (bool value) {
           // Handle backup toggle functionality here
         },
@@ -134,46 +128,51 @@ class _TaskManagerState extends State<TaskManager> {
           // Handle exit functionality here
         },
       ),
-      body: tasks.isEmpty
-          ? const Center(
-              child: Text(
-                'No tasks available.',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GridView.builder(
+          itemCount: tasks.isEmpty ? 1 : tasks.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 5 / 5,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+          ),
+          itemBuilder: (context, index) {
+            if (tasks.isEmpty) {
+              // Show default InfoCard when no tasks are available
+              return InfoCard(
+                task: Task(
+                  id: 0,
+                  title: 'Welcome to task manager',
+                  description: 'Add your tasks.',
+                  timeAndDate: '',
+                  priority: '',
+                  isChecked: false,
+                ),
+                onCheckboxChanged: (_) {},
+                onDelete: () {},
+              );
+            }
+            final task = tasks[index];
+            return Opacity(
+              opacity: task.isChecked ? 0.5 : 1.0,
+              child: GestureDetector(
+                onTap: () => _editTask(task, index),
+                child: InfoCard(
+                  task: task,
+                  onCheckboxChanged: (value) {
+                    setState(() {
+                      task.isChecked = value ?? false;
+                    });
+                  },
+                  onDelete: () => _deleteTask(index),
                 ),
               ),
-            )
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: GridView.builder(
-                itemCount: tasks.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 3 / 4,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemBuilder: (context, index) {
-                  final task = tasks[index];
-                  return Opacity(
-                    opacity: task.isChecked ? 0.5 : 1.0,
-                    child: GestureDetector(
-                      onTap: () => _editTask(task, index),
-                      child: InfoCard(
-                        task: task,
-                        onCheckboxChanged: (value) {
-                          setState(() {
-                            task.isChecked = value ?? false;
-                          });
-                        },
-                        onDelete: () => _deleteTask(index),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+            );
+          },
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewTask,
         elevation: 0,

@@ -9,14 +9,14 @@ class PriorityButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Color getPriorityColor(String priority) {
       switch (priority.toLowerCase()) {
-        case 'high':
+        case 'High':
           return Colors.red;
-        case 'medium':
+        case 'Medium':
           return Colors.orange;
-        case 'low':
+        case 'Low':
           return Colors.green;
         default:
-          return Colors.grey;
+          return Colors.purple.shade100;
       }
     }
 
