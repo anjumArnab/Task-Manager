@@ -176,7 +176,7 @@ class _TaskManagerState extends State<TaskManager> {
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewTask,
-        elevation: 1,
+        elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
           side: BorderSide(
