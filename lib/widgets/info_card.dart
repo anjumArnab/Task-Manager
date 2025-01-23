@@ -4,23 +4,23 @@ import 'priority_button.dart';
 
 class InfoCard extends StatelessWidget {
   final Task task;
-  final ValueChanged<bool?> onCheckboxChanged;
-  final VoidCallback onDelete;
+  final ValueChanged<bool?>? onCheckboxChanged;
+  final VoidCallback? onDelete;
 
   const InfoCard({
     super.key,
     required this.task,
-    required this.onCheckboxChanged,
-    required this.onDelete,
+    this.onCheckboxChanged,
+    this.onDelete,
   });
 
   Color getCardColor() {
     switch (task.priority.toLowerCase()) {
-      case 'High':
+      case 'high':
         return Colors.red;
-      case 'Medium':
+      case 'medium':
         return Colors.orange;
-      case 'Low':
+      case 'low':
         return Colors.green;
       default:
         return Colors.purple.shade100;
@@ -37,26 +37,28 @@ class InfoCard extends StatelessWidget {
       color: getCardColor(),
       child: Stack(
         children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: Checkbox(
-              value: task.isChecked,
-              shape: const CircleBorder(),
-              onChanged: onCheckboxChanged,
+          if (onCheckboxChanged != null)
+            Align(
+              alignment: Alignment.topRight,
+              child: Checkbox(
+                value: task.isChecked,
+                shape: const CircleBorder(),
+                onChanged: onCheckboxChanged,
+              ),
             ),
-          ),
           Align(
             alignment: Alignment.topLeft,
             child: PriorityButton(priority: task.priority),
           ),
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
-              onPressed: onDelete,
+          if (onDelete != null)
+            Positioned(
+              bottom: 10,
+              right: 10,
+              child: IconButton(
+                icon: const Icon(Icons.delete, color: Colors.red),
+                onPressed: onDelete,
+              ),
             ),
-          ),
           Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -74,7 +76,7 @@ class InfoCard extends StatelessWidget {
                   task.timeAndDate,
                   style: const TextStyle(
                     color: Colors.blueGrey, // Updated color
-                    fontSize: 14,            // Adjusted font size
+                    fontSize: 14, // Adjusted font size
                     fontStyle: FontStyle.italic, // Italicized the text
                   ),
                 ),

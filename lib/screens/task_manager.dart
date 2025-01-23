@@ -141,17 +141,20 @@ class _TaskManagerState extends State<TaskManager> {
           itemBuilder: (context, index) {
             if (tasks.isEmpty) {
               // Show default InfoCard when no tasks are available
-              return InfoCard(
-                task: Task(
-                  id: 0,
-                  title: 'Welcome to task manager',
-                  description: 'Add your tasks.',
-                  timeAndDate: '',
-                  priority: '',
-                  isChecked: false,
+              return GestureDetector(
+                onTap: () => _addNewTask(),
+                child: InfoCard(
+                  task: Task(
+                    id: 0,
+                    title: 'Welcome to task manager',
+                    description: 'Add your tasks.',
+                    timeAndDate: '',
+                    priority: '',
+                    isChecked: false,
+                  ),
+                  onCheckboxChanged: null, // No checkbox action for default card
+                  onDelete: null, // No delete action for default card
                 ),
-                onCheckboxChanged: (_) {},
-                onDelete: () {},
               );
             }
             final task = tasks[index];
