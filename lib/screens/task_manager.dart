@@ -1,3 +1,5 @@
+import 'package:database_app/screens/login_create_account_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../models/task_model.dart';
 import '../services/database_helper.dart';
@@ -67,11 +69,53 @@ class _TaskManagerState extends State<TaskManager> {
     });
   }
 
+  void _navigateToLoginCreateAccountScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginCreateAccountScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Task Manager'),
+        actions: [
+          StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
+                // User is logged in
+                return const SizedBox(width: 15); // Empty space instead of button
+              } else {
+                // User is not logged in
+                return OutlinedButton(
+                  onPressed: () => _navigateToLoginCreateAccountScreen(context),
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(10), // Rounded corners
+                    ),
+                    side: BorderSide(color: Colors.purple.shade300, width: 1),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 24),
+                  ),
+                  child: Text(
+                    'Login',
+                    style: TextStyle(
+                      color: Colors.purple.shade300,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+          const SizedBox(width: 15)
+        ],
       ),
       drawer: CustomDrawer(
         // Add the drawer here
@@ -142,7 +186,7 @@ class _TaskManagerState extends State<TaskManager> {
         ),
         child: const Icon(
           Icons.add,
-          color: Colors.purple, 
+          color: Colors.purple,
         ),
       ),
     );
