@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../utils/show_snack_bar.dart';
 
 class FirebaseAuthMethods {
@@ -56,6 +57,37 @@ class FirebaseAuthMethods {
     }
   }
 
+  // Google Sign-In Method
+  Future<void> signInWithGoogle(BuildContext context) async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      if (googleUser == null) {
+        // The user canceled the sign-in
+        return;
+      }
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      // Create a new credential
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in to Firebase with the Google credential
+      UserCredential userCredential = await _auth.signInWithCredential(credential);
+
+      showSnackBar(context, 'Google Sign-In successful! Welcome, ${userCredential.user?.displayName ?? 'User'}');
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message ?? 'Google Sign-In failed.');
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
   // Handle FirebaseException in a cross-platform way
   String _handleFirebaseException(FirebaseAuthException e) {
     String errorMessage = 'An unknown error occurred.';
@@ -95,7 +127,7 @@ class FirebaseAuthMethods {
 
   // Validate Password
   bool _isPasswordValid(String password) {
-    final specialCharRegex = RegExp(r'[!@#\\$&*~]');
+    final specialCharRegex = RegExp(r'[!@#\$&*~]');
     final matches = specialCharRegex.allMatches(password).length;
     return password.length >= 6 && matches >= 2;
   }

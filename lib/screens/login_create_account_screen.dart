@@ -20,7 +20,8 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final FirebaseAuthMethods _authMethods = FirebaseAuthMethods(FirebaseAuth.instance);
+  final FirebaseAuthMethods _authMethods =
+      FirebaseAuthMethods(FirebaseAuth.instance);
 
   void _toggleScreens() {
     setState(() {
@@ -58,6 +59,16 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
           MaterialPageRoute(builder: (context) => const TaskManager()),
         );
       }
+    }
+  }
+
+  void _authenticateWithGoogle() async {
+    await _authMethods.signInWithGoogle(context);
+    if (FirebaseAuth.instance.currentUser != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const TaskManager()),
+      );
     }
   }
 
@@ -162,6 +173,29 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                     ],
                   ),
                 ),
+                if (_isLoginScreen)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: OutlinedButton(
+                  onPressed: _authenticateWithGoogle,
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(10),
+                    ),
+                    side: BorderSide(color: Colors.purple.shade300, width: 1),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 24),
+                  ),
+                  child: Text(
+                    'Sign in with Google',
+                    style: TextStyle(
+                      color: Colors.purple.shade300,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                  ),
               ],
             ),
           ),
