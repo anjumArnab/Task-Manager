@@ -170,22 +170,3 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
     );
   }
 }
-/*
-OutlinedButton(
-  onPressed: _authenticate,
-  style: OutlinedButton.styleFrom(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20), // Rounded corners
-    ),
-    side: BorderSide(color: Colors.purple.shade300, width: 1),
-    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-  ),
-  child: Text(
-    _isLoginScreen ? 'Login' : 'Create Account', style: const TextStyle(fontSize: 17),
-    style: TextStyle(
-      color: Colors.purple.shade300,
-      fontWeight: FontWeight.w500,
-    ),
-  ),
-)
-*/
