@@ -1,4 +1,5 @@
 import 'package:database_app/screens/task_manager.dart';
+import 'package:database_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/task_model.dart';
@@ -120,23 +121,22 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             children: [
               TextFormField(
                 controller: titleController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Title',
                   border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.purple.shade300),
-                    ),
-                  
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
               TextFormField(
                 controller: descriptionController,
                 maxLines: 3, // Allow the description field to have 5 lines
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Description',
                   border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.purple.shade300),
-                    ),
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -146,17 +146,17 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     child: TextFormField(
                       controller: timeController,
                       readOnly: true,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Time & Date',
                         border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.purple.shade300),
-                    ),
-                        
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.calendar_today, color: Colors.purple.shade300),
+                    icon: const Icon(Icons.calendar_today,
+                        color: Colors.black),
                     onPressed: _selectDateTime,
                   ),
                 ],
@@ -173,23 +173,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 ],
               ),
               const SizedBox(height: 20),
-              OutlinedButton(
+              CustomOutlinedButton(
                 onPressed: _saveTask,
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10), // Rounded corners
-                  ),
-                  side: BorderSide(color: Colors.purple.shade300, width: 1),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                ),
-                child: Text(
-                  widget.task == null ? 'Save' : 'Update',
-                  style: TextStyle(
-                    color: Colors.purple.shade300,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                text: widget.task == null ? 'Save' : 'Update',
               ),
             ],
           ),
@@ -198,4 +184,3 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
     );
   }
 }
-

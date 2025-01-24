@@ -1,4 +1,5 @@
 import 'package:database_app/services/firebase_auth_methods.dart';
+import 'package:database_app/widgets/custom_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -97,11 +98,11 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Email',
                     hintText: 'Enter your email',
                     border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.purple.shade300),
+                      borderSide: BorderSide(color: Colors.black),
                     ),
                   ),
                   keyboardType: TextInputType.emailAddress,
@@ -113,14 +114,14 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                     labelText: 'Password',
                     hintText: 'Enter your password',
                     border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.purple.shade300),
+                      borderSide: BorderSide(color: Colors.black),
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
                           _isPasswordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Colors.purple.shade300),
+                          color: Colors.black),
                       onPressed: () {
                         setState(() {
                           _isPasswordVisible = !_isPasswordVisible;
@@ -131,24 +132,9 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                   obscureText: !_isPasswordVisible,
                 ),
                 const SizedBox(height: 16),
-                OutlinedButton(
+                CustomOutlinedButton(
                   onPressed: _authenticate,
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10), // Rounded corners
-                    ),
-                    side: BorderSide(color: Colors.purple.shade300, width: 1),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 24),
-                  ),
-                  child: Text(
-                    _isLoginScreen ? 'Login' : 'Create Account',
-                    style: TextStyle(
-                      color: Colors.purple.shade300,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  text: _isLoginScreen ? 'Login' : 'Create Account',
                 ),
                 const SizedBox(height: 15),
                 RichText(
@@ -176,25 +162,10 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                 if (_isLoginScreen)
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
-                    child: OutlinedButton(
-                  onPressed: _authenticateWithGoogle,
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(10),
+                    child: CustomOutlinedButton(
+                      onPressed: _authenticateWithGoogle,
+                      text: 'Sign in with Google',
                     ),
-                    side: BorderSide(color: Colors.purple.shade300, width: 1),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 24),
-                  ),
-                  child: Text(
-                    'Sign in with Google',
-                    style: TextStyle(
-                      color: Colors.purple.shade300,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
                   ),
               ],
             ),
