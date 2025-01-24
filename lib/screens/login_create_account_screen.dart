@@ -113,7 +113,7 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                   decoration: InputDecoration(
                     labelText: 'Password',
                     hintText: 'Enter your password',
-                    border: UnderlineInputBorder(
+                    border: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
                     suffixIcon: IconButton(
