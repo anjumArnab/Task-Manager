@@ -29,61 +29,55 @@ class InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      color: getCardColor(),
-      child: Stack(
-        children: [
-          if (onCheckboxChanged != null)
+    return GestureDetector(
+      onLongPress: onDelete, // Triggered when the whole card is long-pressed
+      child: Card(
+        margin: const EdgeInsets.all(10),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        color: getCardColor(),
+        child: Stack(
+          children: [
+            if (onCheckboxChanged != null)
+              Align(
+                alignment: Alignment.topRight,
+                child: Checkbox(
+                  value: task.isChecked,
+                  shape: const CircleBorder(),
+                  onChanged: onCheckboxChanged,
+                ),
+              ),
             Align(
-              alignment: Alignment.topRight,
-              child: Checkbox(
-                value: task.isChecked,
-                shape: const CircleBorder(),
-                onChanged: onCheckboxChanged,
-              ),
+              alignment: Alignment.topLeft,
+              child: PriorityButton(priority: task.priority),
             ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: PriorityButton(priority: task.priority),
-          ),
-          if (onDelete != null)
-            Positioned(
-              bottom: 10,
-              right: 10,
-              child: IconButton(
-                icon: const Icon(Icons.delete, color: Colors.red),
-                onPressed: onDelete,
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 30),
-                Text(
-                  task.title,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 5),
-                Text(task.description),
-                const Spacer(),
-                Text(
-                  task.timeAndDate,
-                  style: const TextStyle(
-                    color: Colors.blueGrey, // Updated color
-                    fontSize: 14, // Adjusted font size
-                    fontStyle: FontStyle.italic, // Italicized the text
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 30),
+                  Text(
+                    task.title,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 5),
+                  Text(task.description),
+                  const Spacer(),
+                  Text(
+                    task.timeAndDate,
+                    style: const TextStyle(
+                      color: Colors.blueGrey, // Updated color
+                      fontSize: 14, // Adjusted font size
+                      fontStyle: FontStyle.italic, // Italicized the text
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
