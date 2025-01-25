@@ -26,10 +26,15 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   void initState() {
     super.initState();
     if (widget.task != null) {
+      // Set existing task details
       titleController.text = widget.task!.title;
       descriptionController.text = widget.task!.description;
       timeController.text = widget.task!.timeAndDate;
       priority = widget.task!.priority;
+    } else {
+      // Set initial time to current device time and date
+      timeController.text =
+          DateFormat('yyyy-MM-dd, h:mm a').format(DateTime.now());
     }
   }
 
@@ -155,8 +160,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.calendar_today,
-                        color: Colors.black),
+                    icon: const Icon(Icons.calendar_today, color: Colors.black),
                     onPressed: _selectDateTime,
                   ),
                 ],
