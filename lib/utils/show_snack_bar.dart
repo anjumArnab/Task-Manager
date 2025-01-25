@@ -10,7 +10,7 @@ void showSnackBar(BuildContext context, String message) {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: Colors.purple.shade300,
+            color: Colors.black,
             width: 2,
           ),
         ),
@@ -19,14 +19,14 @@ void showSnackBar(BuildContext context, String message) {
           children: [
             Icon(
               Icons.error_outline_rounded,
-              color: Colors.purple.shade300,
+              color: Colors.black,
             ),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
                 message,
                 style: TextStyle(
-                  color: Colors.purple.shade300,
+                  color: Colors.black,
                   fontSize: 15,
                   fontWeight: FontWeight.w500
                 ),
