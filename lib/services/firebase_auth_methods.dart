@@ -9,29 +9,38 @@ class FirebaseAuthMethods {
   FirebaseAuthMethods(this._auth);
 
   // Sign Up with Email and Password
-  Future<void> signUpWithEmail(
-      {required String email,
-      required String password,
-      required BuildContext context}) async {
-    try {
-      if (!_isPasswordValid(password)) {
-        showSnackBar(context, 'Password must be at least 6 characters long and contain at least 2 special characters.');
-        return;
-      }
-      
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      await _sendEmailVerification(userCredential.user, context);
-    } on FirebaseAuthException catch (e) {
-      String errorMessage = _handleFirebaseException(e);
-      showSnackBar(context, errorMessage);
-    } catch (e) {
-      showSnackBar(context, e.toString());
+Future<void> signUpWithEmail(
+    {required String email,
+    required String password,
+    required BuildContext context}) async {
+  try {
+    if (!_isPasswordValid(password)) {
+      showSnackBar(context,
+          'Password must be at least 6 characters long and contain at least 2 special characters.');
+      return;
     }
+
+    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    // Immediately send a verification email
+    await _sendEmailVerification(userCredential.user, context);
+
+    // Log the user out until they verify their email
+    await _auth.signOut();
+
+    showSnackBar(context,
+        'Account created successfully! A verification email has been sent to ${email}. Please verify your email before logging in.');
+  } on FirebaseAuthException catch (e) {
+    String errorMessage = _handleFirebaseException(e);
+    showSnackBar(context, errorMessage);
+  } catch (e) {
+    showSnackBar(context, e.toString());
   }
+}
+
 
   // Log In with Email and Password
   Future<void> logInWithEmail(
