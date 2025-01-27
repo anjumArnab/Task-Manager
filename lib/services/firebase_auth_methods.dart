@@ -9,51 +9,59 @@ class FirebaseAuthMethods {
   FirebaseAuthMethods(this._auth);
 
   // Sign Up with Email and Password
-Future<void> signUpWithEmail(
-    {required String email,
+  Future<void> signUpWithEmail({
+    required String email,
     required String password,
-    required BuildContext context}) async {
-  try {
-    if (!_isPasswordValid(password)) {
-      showSnackBar(context,
-          'Password must be at least 6 characters long and contain at least 2 special characters.');
-      return;
-    }
-
-    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-
-    // Immediately send a verification email
-    await _sendEmailVerification(userCredential.user, context);
-
-    // Log the user out until they verify their email
-    await _auth.signOut();
-
-    showSnackBar(context,
-        'Account created successfully! A verification email has been sent to ${email}. Please verify your email before logging in.');
-  } on FirebaseAuthException catch (e) {
-    String errorMessage = _handleFirebaseException(e);
-    showSnackBar(context, errorMessage);
-  } catch (e) {
-    showSnackBar(context, e.toString());
-  }
-}
-
-
-  // Log In with Email and Password
-  Future<void> logInWithEmail(
-      {required String email,
-      required String password,
-      required BuildContext context}) async {
+    required BuildContext context,
+  }) async {
     try {
-      await _auth.signInWithEmailAndPassword(
+      if (!_isPasswordValid(password)) {
+        showSnackBar(
+          context,
+          'Password must be at least 6 characters long and contain at least 2 special characters.',
+        );
+        return;
+      }
+
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      if (!_auth.currentUser!.emailVerified) {
+      // Send email verification immediately
+      await _sendEmailVerification(userCredential.user, context);
+
+      // Sign the user out until they verify their email
+      await _auth.signOut();
+
+      showSnackBar(
+        context,
+        'Account created successfully! A verification email has been sent to $email. Please verify your email before logging in.',
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = _handleFirebaseException(e);
+      showSnackBar(context, errorMessage);
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  // Log In with Email and Password
+  Future<void> logInWithEmail({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Ensure email is verified before allowing login
+      if (!userCredential.user!.emailVerified) {
+        // Sign out unverified users
+        await _auth.signOut();
         showSnackBar(context, 'Please verify your email before logging in.');
       } else {
         showSnackBar(context, 'Logged in successfully!');
@@ -78,7 +86,8 @@ Future<void> signUpWithEmail(
       }
 
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       // Create a new credential
       final OAuthCredential credential = GoogleAuthProvider.credential(
@@ -87,9 +96,13 @@ Future<void> signUpWithEmail(
       );
 
       // Sign in to Firebase with the Google credential
-      UserCredential userCredential = await _auth.signInWithCredential(credential);
+      UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
 
-      showSnackBar(context, 'Google Sign-In successful! Welcome, ${userCredential.user?.displayName ?? 'User'}');
+      showSnackBar(
+        context,
+        'Google Sign-In successful! Welcome, ${userCredential.user?.displayName ?? 'User'}',
+      );
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message ?? 'Google Sign-In failed.');
     } catch (e) {
