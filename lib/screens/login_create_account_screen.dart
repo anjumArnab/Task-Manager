@@ -1,3 +1,4 @@
+import 'package:database_app/screens/create_account.dart';
 import 'package:database_app/services/firebase_auth_methods.dart';
 import 'package:database_app/widgets/custom_button.dart';
 import 'package:flutter/gestures.dart';
@@ -9,13 +10,11 @@ class LoginCreateAccountScreen extends StatefulWidget {
   const LoginCreateAccountScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginCreateAccountScreenState createState() =>
       _LoginCreateAccountScreenState();
 }
 
 class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
-  bool _isLoginScreen = true; // Toggle between login and create account screen
   bool _isPasswordVisible = false; // Track password visibility
 
   final TextEditingController _emailController = TextEditingController();
@@ -24,42 +23,21 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
   final FirebaseAuthMethods _authMethods =
       FirebaseAuthMethods(FirebaseAuth.instance);
 
-  void _toggleScreens() {
-    setState(() {
-      _isLoginScreen = !_isLoginScreen;
-    });
-  }
-
   void _authenticate() async {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    if (_isLoginScreen) {
-      // Log in
-      await _authMethods.logInWithEmail(
-        email: email,
-        password: password,
-        context: context,
+    // Log in
+    await _authMethods.logInWithEmail(
+      email: email,
+      password: password,
+      context: context,
+    );
+    if (FirebaseAuth.instance.currentUser != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const TaskManager()),
       );
-      if (FirebaseAuth.instance.currentUser != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const TaskManager()),
-        );
-      }
-    } else {
-      // Sign up
-      await _authMethods.signUpWithEmail(
-        email: email,
-        password: password,
-        context: context,
-      );
-      if (FirebaseAuth.instance.currentUser != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const TaskManager()),
-        );
-      }
     }
   }
 
@@ -87,9 +65,9 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  _isLoginScreen ? 'Login' : 'Create Account',
-                  style: const TextStyle(
+                const Text(
+                  'Login',
+                  style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1.5,
@@ -118,10 +96,11 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Colors.black),
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.black,
+                      ),
                       onPressed: () {
                         setState(() {
                           _isPasswordVisible = !_isPasswordVisible;
@@ -134,39 +113,44 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                 const SizedBox(height: 16),
                 CustomOutlinedButton(
                   onPressed: _authenticate,
-                  text: _isLoginScreen ? 'Login' : 'Create Account',
+                  text: 'Login',
                 ),
                 const SizedBox(height: 15),
                 RichText(
                   text: TextSpan(
                     style: const TextStyle(color: Colors.blue),
                     children: [
-                      TextSpan(
-                        text: _isLoginScreen
-                            ? 'Don\'t have an account? '
-                            : 'Already have an account? ',
-                        style: const TextStyle(color: Colors.black),
+                      const TextSpan(
+                        text: "Don't have an account? ",
+                        style: TextStyle(color: Colors.black),
                       ),
                       TextSpan(
-                        text: _isLoginScreen ? 'Create one' : 'Log In',
+                        text: 'Create one',
                         style: const TextStyle(
                           fontSize: 15,
                           color: Colors.blueAccent,
                         ),
                         recognizer: TapGestureRecognizer()
-                          ..onTap = _toggleScreens,
+                          ..onTap = () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const CreateAccountScreen(),
+                              ),
+                            );
+                          },
                       ),
                     ],
                   ),
                 ),
-                if (_isLoginScreen)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: CustomOutlinedButton(
-                      onPressed: _authenticateWithGoogle,
-                      text: 'Sign in with Google',
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: CustomOutlinedButton(
+                    onPressed: () {}, // Keep the button interactive
+                    text: 'Sign in with Google',
                   ),
+                ),
               ],
             ),
           ),

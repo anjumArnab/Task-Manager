@@ -22,7 +22,7 @@ class Task extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-     home: const TaskManager()
+     home: const TaskManager(),
     );
   }
 }
