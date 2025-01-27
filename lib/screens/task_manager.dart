@@ -12,7 +12,6 @@ class TaskManager extends StatefulWidget {
   const TaskManager({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _TaskManagerState createState() => _TaskManagerState();
 }
 
@@ -70,6 +69,24 @@ class _TaskManagerState extends State<TaskManager> {
     });
   }
 
+  // Handle user logout
+  Future<void> _logoutUser(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut(); // Sign out the user
+      // Navigate to the login/create account screen
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginCreateAccountScreen()),
+        (route) => false,
+      );
+    } catch (e) {
+      // Show error if logout fails
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error signing out: $e')),
+      );
+    }
+  }
+
   void _navigateToLoginCreateAccountScreen(BuildContext context) {
     Navigator.push(
       context,
@@ -110,11 +127,10 @@ class _TaskManagerState extends State<TaskManager> {
         onBackupToggle: (bool value) {
           // Handle backup toggle functionality here
         },
-        onLogout: () {
-          // Handle logout functionality here
-        },
+        onLogout: () => _logoutUser(context), // Logout functionality here
         onExit: () {
           // Handle exit functionality here
+          Navigator.pop(context);
         },
       ),
       body: Padding(
