@@ -79,7 +79,7 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     hintText: 'Enter your email',
-                    border: UnderlineInputBorder(
+                    border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
                   ),
@@ -91,7 +91,7 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                   decoration: InputDecoration(
                     labelText: 'Password',
                     hintText: 'Enter your password',
-                    border: const UnderlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                     ),
                     suffixIcon: IconButton(

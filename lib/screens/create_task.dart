@@ -128,7 +128,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 controller: titleController,
                 decoration: const InputDecoration(
                   labelText: 'Title',
-                  border: UnderlineInputBorder(
+                  border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
@@ -139,7 +139,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 maxLines: 3, // Allow the description field to have 5 lines
                 decoration: const InputDecoration(
                   labelText: 'Description',
-                  border: UnderlineInputBorder(
+                  border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
@@ -153,7 +153,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                       readOnly: true,
                       decoration: const InputDecoration(
                         labelText: 'Time & Date',
-                        border: UnderlineInputBorder(
+                        border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black),
                         ),
                       ),
