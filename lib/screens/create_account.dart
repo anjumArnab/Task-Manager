@@ -50,7 +50,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           'fullName': fullName,
           'age': int.tryParse(age) ?? 0, // Convert age to an integer
           'email': email,
-          'createdAt': FieldValue.serverTimestamp(), // Timestamp for user creation
+          'createdAt':
+              FieldValue.serverTimestamp(), // Timestamp for user creation
         });
 
         // Navigate to TaskManager screen
@@ -60,7 +61,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please verify your email before proceeding.")),
+          const SnackBar(
+              content: Text("Please verify your email before proceeding.")),
         );
       }
     } catch (e) {
