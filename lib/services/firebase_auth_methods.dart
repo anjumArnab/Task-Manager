@@ -23,7 +23,8 @@ class FirebaseAuthMethods {
         return;
       }
 
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -31,7 +32,7 @@ class FirebaseAuthMethods {
       // Send email verification immediately
       await _sendEmailVerification(userCredential.user, context);
 
-      // Sign the user out until they verify their email
+      // Sign out immediately to force user to verify the email
       await _auth.signOut();
 
       showSnackBar(
