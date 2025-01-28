@@ -40,7 +40,6 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
       );
     }
   }
-
   void _authenticateWithGoogle() async {
     await _authMethods.signInWithGoogle(context);
     if (FirebaseAuth.instance.currentUser != null) {

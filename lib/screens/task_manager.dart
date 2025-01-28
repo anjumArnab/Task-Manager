@@ -1,4 +1,4 @@
-import 'package:database_app/screens/login_create_account_screen.dart';
+import 'package:database_app/screens/login_screen.dart';
 import 'package:database_app/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

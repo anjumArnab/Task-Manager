@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:database_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:database_app/services/firebase_auth_methods.dart';
@@ -8,7 +9,6 @@ class CreateAccountScreen extends StatefulWidget {
   const CreateAccountScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _CreateAccountScreenState createState() => _CreateAccountScreenState();
 }
 
@@ -29,15 +29,44 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    // You can add your validation logic here (e.g., checking if the fields are filled, age is valid)
+    // Validation logic (optional)
+    if (fullName.isEmpty || age.isEmpty || email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("All fields are required!")),
+      );
+      return;
+    }
 
-    // Sign up logic
-    await _authMethods.signUpWithEmail(
-        email: email, password: password, context: context);
-    if (FirebaseAuth.instance.currentUser != null) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const TaskManager()),
+    try {
+      // Sign up logic
+      await _authMethods.signUpWithEmail(
+          email: email, password: password, context: context);
+
+      // Check if the user was successfully signed up
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null && user.emailVerified) {
+        // Save user details in Firestore
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'fullName': fullName,
+          'age': int.tryParse(age) ?? 0, // Convert age to an integer
+          'email': email,
+          'createdAt': FieldValue.serverTimestamp(), // Timestamp for user creation
+        });
+
+        // Navigate to TaskManager screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const TaskManager()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please verify your email before proceeding.")),
+        );
+      }
+    } catch (e) {
+      // Handle errors (e.g., show a SnackBar with the error message)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${e.toString()}")),
       );
     }
   }
