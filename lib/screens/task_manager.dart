@@ -18,6 +18,9 @@ class TaskManager extends StatefulWidget {
 class _TaskManagerState extends State<TaskManager> {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
   List<Task> tasks = [];
+  List<Task> filteredTasks = []; // List to hold filtered tasks
+  bool isSearching = false; // Flag to check if search is active
+  TextEditingController searchController = TextEditingController(); // Controller for search bar
 
   @override
   void initState() {
@@ -30,6 +33,18 @@ class _TaskManagerState extends State<TaskManager> {
     List<Task> taskList = await _databaseHelper.getTaskList();
     setState(() {
       tasks = taskList;
+      filteredTasks = taskList; // Initially show all tasks
+    });
+  }
+
+  // Update tasks based on search query
+  void _searchTasks(String query) {
+    final filtered = tasks.where((task) {
+      return task.title.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+
+    setState(() {
+      filteredTasks = filtered;
     });
   }
 
@@ -38,6 +53,7 @@ class _TaskManagerState extends State<TaskManager> {
     await _databaseHelper.deleteTask(tasks[index].id!);
     setState(() {
       tasks.removeAt(index);
+      filteredTasks = tasks; // Reset filtered list after deletion
     });
   }
 
@@ -100,14 +116,42 @@ class _TaskManagerState extends State<TaskManager> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Task Manager'),
+        title: isSearching
+            ? TextField(
+                controller: searchController,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  hintText: 'Search by title...',
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                onChanged: _searchTasks,
+              )
+            : const Text('Task Manager'),
         actions: [
+          isSearching
+              ? IconButton(
+                  icon: const Icon(Icons.cancel),
+                  onPressed: () {
+                    setState(() {
+                      isSearching = false;
+                      searchController.clear();
+                      filteredTasks = tasks; // Reset to all tasks when search is canceled
+                    });
+                  },
+                )
+              : IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    setState(() {
+                      isSearching = true;
+                    });
+                  },
+                ),
           StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data != null) {
-                return const SizedBox(
-                    width: 15); // Empty space instead of button
+                return const SizedBox(width: 15); // Empty space instead of button
               } else {
                 return CustomOutlinedButton(
                   onPressed: () => _navigateToLoginCreateAccountScreen(context),
@@ -136,7 +180,7 @@ class _TaskManagerState extends State<TaskManager> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GridView.builder(
-          itemCount: tasks.isEmpty ? 1 : tasks.length,
+          itemCount: filteredTasks.isEmpty ? 1 : filteredTasks.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 5 / 5,
@@ -144,8 +188,7 @@ class _TaskManagerState extends State<TaskManager> {
             mainAxisSpacing: 10,
           ),
           itemBuilder: (context, index) {
-            if (tasks.isEmpty) {
-              // Show default InfoCard when no tasks are available
+            if (filteredTasks.isEmpty) {
               return GestureDetector(
                 onTap: () => _addNewTask(),
                 child: InfoCard(
@@ -157,13 +200,12 @@ class _TaskManagerState extends State<TaskManager> {
                     priority: '',
                     isChecked: false,
                   ),
-                  onCheckboxChanged:
-                      null, // No checkbox action for default card
-                  onDelete: null, // No delete action for default card
+                  onCheckboxChanged: null,
+                  onDelete: null,
                 ),
               );
             }
-            final task = tasks[index];
+            final task = filteredTasks[index];
             return Opacity(
               opacity: task.isChecked ? 0.5 : 1.0,
               child: GestureDetector(
