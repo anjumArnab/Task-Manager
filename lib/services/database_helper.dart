@@ -70,6 +70,26 @@ class DatabaseHelper {
     return result;
   }
 
+  // Search operation
+Future<List<Task>> searchTaskByTitle(String searchTerm) async {
+  Database db = await this.database;
+  var result = await db.query(
+    taskTable,
+    where: '$colTitle LIKE ?',
+    whereArgs: ['%$searchTerm%'],
+    orderBy: '$colPriority ASC',
+  );
+
+  // Convert the result into a list of Task objects
+  List<Task> taskList = [];
+  for (var taskMap in result) {
+    taskList.add(Task.fromMapObject(taskMap));
+  }
+
+  return taskList;
+}
+
+
   // Get number of Task objects in database
   Future<int?> getCount() async {
     Database db = await this.database;
