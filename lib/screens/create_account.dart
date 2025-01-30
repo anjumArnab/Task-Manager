@@ -51,7 +51,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           'age': int.tryParse(age) ?? 0, // Convert age to an integer
           'email': email,
           'createdAt': FieldValue.serverTimestamp(), // Timestamp for user creation
-          'emailVerified': user.emailVerified, // Track email verification status
         });
 
         // Prompt the user to verify their email

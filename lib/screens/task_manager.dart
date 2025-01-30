@@ -1,4 +1,5 @@
 import 'package:database_app/screens/login_screen.dart';
+import 'package:database_app/services/firebase_auth_methods.dart';
 import 'package:database_app/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -164,7 +165,7 @@ class _TaskManagerState extends State<TaskManager> {
           const SizedBox(width: 15)
         ],
       ),
-      drawer: CustomDrawer(
+      drawer:CustomDrawer(
         username: 'Sakib Anjum Arnab',
         email: 'arnab@example.com',
         profilePictureUrl: 'https://www.example.com/profile-picture.jpg',

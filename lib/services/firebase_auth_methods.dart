@@ -29,12 +29,6 @@ class FirebaseAuthMethods {
         password: password,
       );
 
-      // Send email verification immediately
-      //await _sendEmailVerification(userCredential.user, context);
-
-      // Sign out immediately to force user to verify the email
-      //await _auth.signOut();
-
       showSnackBar(
         context,
         'Account created successfully! A verification email has been sent to $email. Please verify your email before logging in.',
@@ -59,14 +53,6 @@ class FirebaseAuthMethods {
         password: password,
       );
 
-      // Ensure email is verified before allowing login
-      if (!userCredential.user!.emailVerified) {
-        // Sign out unverified users
-        await _auth.signOut();
-        showSnackBar(context, 'Please verify your email before logging in.');
-      } else {
-        showSnackBar(context, 'Logged in successfully!');
-      }
     } on FirebaseAuthException catch (e) {
       String errorMessage = _handleFirebaseException(e);
       showSnackBar(context, errorMessage);
@@ -137,8 +123,9 @@ class FirebaseAuthMethods {
   }
 
   // Send Email Verification
-  Future<void> _sendEmailVerification(User? user, BuildContext context) async {
+  Future<void> sendEmailVerification(BuildContext context) async {
     try {
+      final user = _auth.currentUser;
       if (user != null && !user.emailVerified) {
         await user.sendEmailVerification();
         showSnackBar(context, 'Verification email sent to ${user.email}.');
