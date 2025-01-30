@@ -31,7 +31,7 @@ class FirebaseAuthMethods {
 
       showSnackBar(
         context,
-        'Account created successfully! A verification email has been sent to $email. Please verify your email before logging in.',
+        'Account created successfully!.',
       );
     } on FirebaseAuthException catch (e) {
       String errorMessage = _handleFirebaseException(e);
