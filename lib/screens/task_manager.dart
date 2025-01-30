@@ -12,6 +12,7 @@ class TaskManager extends StatefulWidget {
   const TaskManager({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _TaskManagerState createState() => _TaskManagerState();
 }
 

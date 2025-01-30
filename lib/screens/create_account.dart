@@ -44,25 +44,26 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
       // Check if the user was successfully signed up
       final user = FirebaseAuth.instance.currentUser;
-      if (user != null && user.emailVerified) {
-        // Save user details in Firestore
+      if (user != null) {
+        // Save user details in Firestore immediately after sign-up
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'fullName': fullName,
           'age': int.tryParse(age) ?? 0, // Convert age to an integer
           'email': email,
-          'createdAt':
-              FieldValue.serverTimestamp(), // Timestamp for user creation
+          'createdAt': FieldValue.serverTimestamp(), // Timestamp for user creation
+          'emailVerified': user.emailVerified, // Track email verification status
         });
 
-        // Navigate to TaskManager screen
+        // Prompt the user to verify their email
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text("Account created! Please verify your email.")),
+        );
+
+        // Navigate to TaskManager screen (optional)
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const TaskManager()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text("Please verify your email before proceeding.")),
         );
       }
     } catch (e) {

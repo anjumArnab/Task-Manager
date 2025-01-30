@@ -30,10 +30,10 @@ class FirebaseAuthMethods {
       );
 
       // Send email verification immediately
-      await _sendEmailVerification(userCredential.user, context);
+      //await _sendEmailVerification(userCredential.user, context);
 
       // Sign out immediately to force user to verify the email
-      await _auth.signOut();
+      //await _auth.signOut();
 
       showSnackBar(
         context,
