@@ -1,5 +1,4 @@
 import 'package:database_app/screens/login_screen.dart';
-import 'package:database_app/services/firebase_auth_methods.dart';
 import 'package:database_app/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import '../services/database_helper.dart';
 import 'create_task.dart';
 import '../widgets/info_card.dart';
 import 'drawer.dart';
+import '../services/local_notification.dart'; // Import Notification Service
 
 class TaskManager extends StatefulWidget {
   const TaskManager({super.key});
@@ -27,6 +27,7 @@ class _TaskManagerState extends State<TaskManager> {
   @override
   void initState() {
     super.initState();
+    NotificationService.initialize(); // Initialize notifications
     _loadTasks();
   }
 
@@ -37,6 +38,21 @@ class _TaskManagerState extends State<TaskManager> {
       tasks = taskList;
       filteredTasks = taskList; // Initially show all tasks
     });
+
+    // Schedule notifications for all tasks
+    for (var task in tasks) {
+      _scheduleTaskNotification(task);
+    }
+  }
+
+  // Schedule Notification for each task
+  void _scheduleTaskNotification(Task task) {
+    NotificationService.scheduleNotification(
+      id: task.id ?? DateTime.now().millisecondsSinceEpoch, // Unique ID
+      title: task.title,
+      body: task.description,
+      scheduledDateTime: task.timeAndDate, // Ensure correct format "yyyy-MM-dd HH:mm"
+    );
   }
 
   // Update tasks based on search query
@@ -165,7 +181,7 @@ class _TaskManagerState extends State<TaskManager> {
           const SizedBox(width: 15)
         ],
       ),
-      drawer:CustomDrawer(
+      drawer: CustomDrawer(
         username: 'Sakib Anjum Arnab',
         email: 'arnab@example.com',
         profilePictureUrl: 'https://www.example.com/profile-picture.jpg',
