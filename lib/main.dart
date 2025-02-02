@@ -2,6 +2,7 @@ import 'package:database_app/firebase_options.dart';
 import 'package:database_app/screens/task_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +20,8 @@ class Task extends StatelessWidget {
     return MaterialApp(
       title: 'Task Manager',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+        theme: ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme()
       ),
      home: const TaskManager(),
     );
