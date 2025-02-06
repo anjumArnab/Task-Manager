@@ -155,7 +155,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   obscureText: !_isPasswordVisible,
                 ),
                 const SizedBox(height: 16),
-                CustomOutlinedButton(
+                CustomButton(
                     onPressed: _signUp, text: "Create Account"),
               ],
             ),

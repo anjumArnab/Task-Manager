@@ -165,20 +165,21 @@ class _TaskManagerState extends State<TaskManager> {
                     });
                   },
                 ),
+                IconButton(icon: const Icon(Icons.add), onPressed: _addNewTask),
           StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data != null) {
                 return const SizedBox(width: 15); // Empty space instead of button
               } else {
-                return CustomOutlinedButton(
+                return CustomButton(
                   onPressed: () => _navigateToLoginCreateAccountScreen(context),
                   text: 'Login',
                 );
               }
             },
           ),
-          const SizedBox(width: 15)
+          const SizedBox(width: 15),
         ],
       ),
       drawer: CustomDrawer(
@@ -240,21 +241,6 @@ class _TaskManagerState extends State<TaskManager> {
               ),
             );
           },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addNewTask,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-          side: const BorderSide(
-            color: Colors.black,
-            width: 2,
-          ),
-        ),
-        child: const Icon(
-          Icons.add,
-          color: Colors.black,
         ),
       ),
     );

@@ -110,7 +110,7 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                   obscureText: !_isPasswordVisible,
                 ),
                 const SizedBox(height: 16),
-                CustomOutlinedButton(
+                CustomButton(
                   onPressed: _authenticate,
                   text: 'Login',
                 ),
@@ -145,7 +145,7 @@ class _LoginCreateAccountScreenState extends State<LoginCreateAccountScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
-                  child: CustomOutlinedButton(
+                  child: CustomButton(
                     onPressed: () {}, // Keep the button interactive
                     text: 'Sign in with Google',
                   ),

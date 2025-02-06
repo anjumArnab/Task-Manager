@@ -177,7 +177,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 ],
               ),
               const SizedBox(height: 20),
-              CustomOutlinedButton(
+              CustomButton(
                 onPressed: _saveTask,
                 text: widget.task == null ? 'Done' : 'Update',
               ),
