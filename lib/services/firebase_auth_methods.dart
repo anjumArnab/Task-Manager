@@ -23,6 +23,7 @@ class FirebaseAuthMethods {
         return;
       }
 
+      // ignore: unused_local_variable
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -48,6 +49,7 @@ class FirebaseAuthMethods {
     required BuildContext context,
   }) async {
     try {
+      // ignore: unused_local_variable
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
