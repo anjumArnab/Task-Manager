@@ -1,45 +1,50 @@
 import 'package:flutter/material.dart';
 
-class CustomOutlinedButton extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
-  final Color borderColor;
   final Color textColor;
-  final EdgeInsetsGeometry padding;
   final double borderRadius;
-  final double borderWidth;
   final FontWeight fontWeight;
 
-  const CustomOutlinedButton({
+  const CustomButton({
     super.key,
     required this.onPressed,
     required this.text,
-    this.borderColor = Colors.black,
-    this.textColor = Colors.black,
-    this.padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+    this.textColor = Colors.white,
     this.borderRadius = 10.0,
-    this.borderWidth = 1.0,
     this.fontWeight = FontWeight.w500,
   });
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
+    return ElevatedButton(
       onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
-        side: BorderSide(color: borderColor, width: borderWidth),
-        padding: padding,
+      style: ElevatedButton.styleFrom(
+        backgroundColor:const Color.fromRGBO(23, 59, 69, 1),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
-      child: Text(
-        text,
-        style: TextStyle(
+      child: Text(text, style: TextStyle(
           color: textColor,
           fontWeight: fontWeight,
-        ),
-      ),
+        ),),
     );
   }
 }
+
+
+/*
+ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor:const Color.fromRGBO(23, 59, 69, 1),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      ),
+      child: Text(text, style: TextStyle(
+          color: textColor,
+          fontWeight: fontWeight,
+        ),),
+    );
+
+
+*/
