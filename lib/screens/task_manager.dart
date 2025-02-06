@@ -19,6 +19,7 @@ class TaskManager extends StatefulWidget {
 
 class _TaskManagerState extends State<TaskManager> {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
+  int _selectedIndex = 0;
   List<Task> tasks = [];
   List<Task> filteredTasks = []; // List to hold filtered tasks
   bool isSearching = false; // Flag to check if search is active
@@ -29,6 +30,12 @@ class _TaskManagerState extends State<TaskManager> {
     super.initState();
     NotificationService.initialize(); // Initialize notifications
     _loadTasks();
+  }
+
+   void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   // Load tasks from the database
@@ -242,6 +249,20 @@ class _TaskManagerState extends State<TaskManager> {
             );
           },
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_sharp),
+            label: 'Calendar',
+          ),
+        ],
       ),
     );
   }
