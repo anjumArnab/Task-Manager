@@ -31,20 +31,3 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
-
-
-/*
-ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor:const Color.fromRGBO(23, 59, 69, 1),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      ),
-      child: Text(text, style: TextStyle(
-          color: textColor,
-          fontWeight: fontWeight,
-        ),),
-    );
-
-
-*/
