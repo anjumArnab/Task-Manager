@@ -7,7 +7,7 @@ import '../services/database_helper.dart';
 import 'create_task.dart';
 import '../widgets/info_card.dart';
 import 'drawer.dart';
-import '../services/local_notification.dart'; // Import Notification Service
+import '../services/local_notification.dart';
 
 class TaskManager extends StatefulWidget {
   const TaskManager({super.key});
@@ -19,11 +19,11 @@ class TaskManager extends StatefulWidget {
 
 class _TaskManagerState extends State<TaskManager> {
   final DatabaseHelper _databaseHelper = DatabaseHelper();
-  int _selectedIndex = 0;
   List<Task> tasks = [];
   List<Task> filteredTasks = []; // List to hold filtered tasks
   bool isSearching = false; // Flag to check if search is active
-  TextEditingController searchController = TextEditingController(); // Controller for search bar
+  TextEditingController searchController =
+      TextEditingController(); // Controller for search bar
 
   @override
   void initState() {
@@ -32,11 +32,6 @@ class _TaskManagerState extends State<TaskManager> {
     _loadTasks();
   }
 
-   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   // Load tasks from the database
   void _loadTasks() async {
@@ -58,7 +53,8 @@ class _TaskManagerState extends State<TaskManager> {
       id: task.id ?? DateTime.now().millisecondsSinceEpoch, // Unique ID
       title: task.title,
       body: task.description,
-      scheduledDateTime: task.timeAndDate, // Ensure correct format "yyyy-MM-dd HH:mm"
+      scheduledDateTime:
+          task.timeAndDate, // Ensure correct format "yyyy-MM-dd HH:mm"
     );
   }
 
@@ -117,7 +113,8 @@ class _TaskManagerState extends State<TaskManager> {
       // Navigate to the login/create account screen
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const LoginCreateAccountScreen()),
+        MaterialPageRoute(
+            builder: (context) => const LoginCreateAccountScreen()),
         (route) => false,
       );
     } catch (e) {
@@ -141,43 +138,16 @@ class _TaskManagerState extends State<TaskManager> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: isSearching
-            ? TextField(
-                controller: searchController,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  hintText: 'Search by title...',
-                  hintStyle: TextStyle(color: Colors.white),
-                ),
-                onChanged: _searchTasks,
-              )
-            : const Text('Task Manager'),
+        title: const Text('Task Manager'),
         actions: [
-          isSearching
-              ? IconButton(
-                  icon: const Icon(Icons.cancel),
-                  onPressed: () {
-                    setState(() {
-                      isSearching = false;
-                      searchController.clear();
-                      filteredTasks = tasks; // Reset to all tasks when search is canceled
-                    });
-                  },
-                )
-              : IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    setState(() {
-                      isSearching = true;
-                    });
-                  },
-                ),
-                IconButton(icon: const Icon(Icons.add), onPressed: _addNewTask),
+          IconButton(icon: const Icon(Icons.add), onPressed: _addNewTask),
+          const SizedBox(width: 30),    
           StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data != null) {
-                return const SizedBox(width: 15); // Empty space instead of button
+                return const SizedBox(
+                    width: 15); // Empty space instead of button
               } else {
                 return CustomButton(
                   onPressed: () => _navigateToLoginCreateAccountScreen(context),
@@ -249,20 +219,6 @@ class _TaskManagerState extends State<TaskManager> {
             );
           },
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_sharp),
-            label: 'Calendar',
-          ),
-        ],
       ),
     );
   }
